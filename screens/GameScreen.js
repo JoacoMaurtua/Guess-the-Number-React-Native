@@ -1,9 +1,32 @@
-import { Text } from "react-native"
+import { View, Text, StyleSheet } from "react-native";
+import Title from "../components/Title";
 
 const GameScreen = () => {
   return (
-    <Text>GameScreen</Text>
+    <View style={styles.screen}>
+      <Title>Opponent's Guess</Title>
+      {/*  */}
+      <View>
+        <Text>Higher or lower?</Text>
+        {/* + - */}
+      </View>
+      <View>
+        {/* LOG ROUNDS */}
+      </View>
+    </View>
   )
 }
 
 export default GameScreen;
+
+const styles = StyleSheet.create({
+  screen:{
+    flex:1,
+    padding: 64,
+  }
+})
+
+
+
+/* Para posicionar pantallas y que no sean tapadas por los elementos del celular
+   se puede utilizar el componente SafeAreaView */
