@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     color: Colors.accentColor,       //accentColor
     textAlign: 'center',
     borderWidth: 2,
-    borderColor: Colors.accentColor, //accentColor
+    borderColor: 'white', //accentColor
     padding: 12,
   }
 });

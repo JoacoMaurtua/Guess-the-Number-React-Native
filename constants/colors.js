@@ -4,7 +4,7 @@ const Colors = {
   secondGreen: '#228b22',
   thirdGreen: '#adff2f',
   accentColor:'white',
-  yellow: '#ffff00',
+  yellow: '#fff236',
 
 };
 
