@@ -3,6 +3,8 @@ import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import { LinearGradient } from 'expo-linear-gradient';
+import Colors from './constants/colors';
+
 export default function App() {
   const [pickedNumber, setPickedNumber] = useState();
 
@@ -17,7 +19,7 @@ export default function App() {
   };
 
   return (
-    <LinearGradient  colors={[`#ffff00`, `#2e8b57`]} style={styles.rootContainer}>
+    <LinearGradient  colors={[Colors.yellow, Colors.darkGreen]} style={styles.rootContainer}> 
       <ImageBackground 
         style={styles.rootContainer}
         source={require('./assets/images/background.png')}
@@ -48,3 +50,5 @@ const styles = StyleSheet.create({
 /* Para agregar un gradiente, podemos usar el componente LinearGradient de expo */
 
 /* Para isertar una imagen de fondo se puede utilizar el componente ImageBackground y sus props */
+
+/* Se pueden agregar colores globales en un arcvhivo colors y exportarlos */

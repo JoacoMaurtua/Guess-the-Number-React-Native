@@ -1,4 +1,5 @@
 import { Text, StyleSheet } from "react-native"
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const Title = ({children}) => {
   return (
@@ -12,10 +13,10 @@ const styles = StyleSheet.create({
   title:{
     fontSize: 24,
     fontWeight: "bold",
-    color: 'white',
+    color: Colors.accentColor,       //accentColor
     textAlign: 'center',
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: Colors.accentColor, //accentColor
     padding: 12,
   }
 });
