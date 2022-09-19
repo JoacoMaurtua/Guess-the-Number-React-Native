@@ -6,6 +6,7 @@ import PrimaryButton from '../components/PrimaryButton';
 import Card from '../components/Card';
 import Instruction from '../components/Instruction';
 import Colors from '../constants/colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min; //se suma + min para que nunca de 0
@@ -64,10 +65,14 @@ const GameScreen = ({ userInput, gameOver }) => {
         <Instruction style={styles.hOrlText}>Higher or lower?</Instruction>
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name="md-remove" size={25}/>
+            </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}>+ </PrimaryButton>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}> 
+              <Ionicons name="md-add" size={25}/>
+            </PrimaryButton>
           </View>
         </View>
       </Card>
@@ -111,3 +116,11 @@ const styles = StyleSheet.create({
 
 /* Se puede imitar el comportamiento en cascada del CSS, utilizando props, pues el atributo style
    puede recibir un arreglo de estilos*/
+
+/* 
+  Se puede agregar iconos gracias a la libreria Ionicons
+*/
+
+/* 
+  Se puede agregar fuentes personalizadas gracias a la libreria expo-font
+*/
