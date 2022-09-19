@@ -4,6 +4,7 @@ import Title from '../components/Title';
 import NumberContainer from '../components/NumberContainer';
 import PrimaryButton from '../components/PrimaryButton';
 import Card from '../components/Card';
+import Instruction from '../components/Instruction';
 import Colors from '../constants/colors';
 
 function generateRandomBetween(min, max, exclude) {
@@ -60,14 +61,14 @@ const GameScreen = ({ userInput, gameOver }) => {
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <Text style={styles.instruction}>Higher or lower?</Text>
-        <View>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}>
-            +
-          </PrimaryButton>
+        <Instruction style={styles.hOrlText}>Higher or lower?</Instruction>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}>+ </PrimaryButton>
+          </View>
         </View>
       </Card>
       <View>{/* LOG ROUNDS */}</View>
@@ -80,13 +81,22 @@ export default GameScreen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 54,
+    padding: 45,
+    marginTop: 40,
   },
 
-  instruction: {
-    color: Colors.accentColor,
-    fontSize:16,
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
+
+  buttonContainer: {
+    flex: 1,
+  },
+
+  hOrlText:{
+    marginBottom: 15,
+  }
 });
 
 /* Para posicionar pantallas y que no sean tapadas por los elementos del celular
@@ -98,3 +108,6 @@ const styles = StyleSheet.create({
 /* Recordar que useEffect se ejecuta despues del renderizado y de cada actualizacion
    por ello este componente funcion se ejecutara antes del useEffect, por ende antes
    de que podamos pasar al estado gameOver  */
+
+/* Se puede imitar el comportamiento en cascada del CSS, utilizando props, pues el atributo style
+   puede recibir un arreglo de estilos*/

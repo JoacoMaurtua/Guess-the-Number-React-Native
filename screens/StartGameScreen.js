@@ -4,6 +4,7 @@ import PrimaryButton from '../components/PrimaryButton';
 import Title from '../components/Title';
 import Colors from '../constants/colors';
 import Card from '../components/Card';
+import Instruction from '../components/Instruction';
 
 const StartGameScreen = ({ onPickNumber }) => {
   const [enteredNumber, setEnteredeNumber] = useState('');
@@ -31,7 +32,7 @@ const StartGameScreen = ({ onPickNumber }) => {
     <View style={styles.rootContainer}>
       <Title>Guess My Number</Title>
       <Card>
-        <Text style={styles.instruction}>Enter your Number:</Text>
+        <Instruction>Enter your Number:</Instruction>
         <TextInput
           style={styles.numberInput}
           maxLength={2}
@@ -63,11 +64,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-
-  instruction: {
-    color: Colors.accentColor,
-    fontSize:16,
-  },
 
   numberInput: {
     height: 50,
