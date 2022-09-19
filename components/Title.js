@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
   title:{
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.accentColor,       //accentColor
+    color: 'white',       //accentColor
     textAlign: 'center',
-    borderWidth: 2,
+    borderWidth: 4,
     borderColor: 'white', //accentColor
     padding: 12,
   }

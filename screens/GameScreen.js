@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import Title from '../components/Title';
 import NumberContainer from '../components/NumberContainer';
@@ -17,13 +17,16 @@ function generateRandomBetween(min, max, exclude) {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-const GameScreen = ({ userInput }) => {
-  const initialGuess = generateRandomBetween(
-    minBoundary,
-    maxBoundary,
-    userInput
-  );
+const GameScreen = ({ userInput, gameOver }) => {
+  const initialGuess = generateRandomBetween(1, 100, userInput);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  //Utilizo un useEffect porque esta condicional se ejecutara cada vez que currentGuess cambie
+  useEffect(() => {
+    if (currentGuess === userInput) {
+      gameOver();
+    }
+  }, [currentGuess, userInput, gameOver]);
 
   function nextGuessHandler(direction) {
     //condicional para que no se pueda hacer trampa
@@ -31,13 +34,12 @@ const GameScreen = ({ userInput }) => {
       (direction === 'lower' && currentGuess < userInput) ||
       (direction === 'upper' && currentGuess > userInput)
     ) {
-      Alert.alert("Don't lie!","You know that this is wrong...", [
-        { text: 'Sorry', style: 'cancel'}
+      Alert.alert("Don't lie!", 'You know that this is wrong...', [
+        { text: 'Sorry', style: 'cancel' },
       ]);
-      
       return;
     }
-    console.log(currentGuess);
+
     if (direction === 'lower') {
       maxBoundary = currentGuess;
     } else {
@@ -85,3 +87,7 @@ const styles = StyleSheet.create({
 
 /* MUY IMPORTANTE: Cuando quiera pasar funciones que reciben parametros a un eventHandler
    se tiene que urilizar el metodo de combinacion bind() */
+
+/* Recordar que useEffect se ejecuta despues del renderizado y de cada actualizacion
+   por ello este componente funcion se ejecutara antes del useEffect, por ende antes
+   de que podamos pasar al estado gameOver  */
