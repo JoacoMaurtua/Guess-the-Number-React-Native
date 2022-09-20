@@ -32,6 +32,11 @@ const GameScreen = ({ userInput, gameOver }) => {
     }
   }, [currentGuess, userInput, gameOver]);
 
+  useEffect(() =>{
+    minBoundary = 1;
+    maxBoundary = 100;
+  },[])
+
   function nextGuessHandler(direction) {
     //condicional para que no se pueda hacer trampa
     if (

@@ -11,64 +11,75 @@ import AppLoading from 'expo-app-loading';
 export default function App() {
   const [pickedNumber, setPickedNumber] = useState();
   const [isGameOver, setIsGameOver] = useState(true);
+  const [guessRoundsNumber, setGuessRoundsNumber] = useState(0);
 
   //useFonts devuelve un arreglo cuyo primer valor es un booleano que determinar si las fuentes cargaron o no
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
   });
 
-  if(!fontsLoaded){
-    return <AppLoading />
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
 
-  const pickedNumberHandler =(inputNumber)=>{
-    setPickedNumber(inputNumber)
+  const pickedNumberHandler = (inputNumber) => {
+    setPickedNumber(inputNumber);
     setIsGameOver(false);
-  }
-
-  const gameIsOverHandler =()=>{
-    setIsGameOver(true);
-  }
-
-  let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>;
-
-  if(pickedNumber){
-    screen = <GameScreen userInput={pickedNumber} gameOver={gameIsOverHandler}/>
   };
 
-  if(isGameOver && pickedNumber){
-    screen = <GameOverScreen/>
+  const gameIsOverHandler = () => {
+    setIsGameOver(true);
+  };
+
+  const startNewGameHandler = () => {
+    setPickedNumber(null);
+    setGuessRoundsNumber(0);
+  }
+
+  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
+
+  if (pickedNumber) {
+    screen = (
+      <GameScreen userInput={pickedNumber} gameOver={gameIsOverHandler} />
+    );
+  }
+
+  if (isGameOver && pickedNumber) {
+    screen = (
+      <GameOverScreen
+        userNumber={pickedNumber}
+        roundsNumber={guessRoundsNumber}
+        startAgainGame={startNewGameHandler}
+      />
+    );
   }
 
   return (
-    <LinearGradient  colors={[Colors.darkGreen, Colors.yellow]} style={styles.rootContainer}> 
-      <ImageBackground 
+    <LinearGradient
+      colors={[Colors.darkGreen, Colors.yellow]}
+      style={styles.rootContainer}
+    >
+      <ImageBackground
         style={styles.rootContainer}
         source={require('./assets/images/background.png')}
         imageStyle={styles.imageBackground}
       >
-      <SafeAreaView style={styles.rootContainer}>
-        {screen}
-      </SafeAreaView>
-     
+        <SafeAreaView style={styles.rootContainer}>{screen}</SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
-};
+}
 
 const styles = StyleSheet.create({
- rootContainer:{
-  flex:1,
- },
+  rootContainer: {
+    flex: 1,
+  },
 
- imageBackground:{
-  opacity:0.20,
- },
-
+  imageBackground: {
+    opacity: 0.2,
+  },
 });
-
-
 
 /* Para agregar un gradiente, podemos usar el componente LinearGradient de expo */
 
