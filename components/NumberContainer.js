@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.yellow,
     borderWidth: 4,
     padding: 24,
-    margin: 24,
+    marginVertical: 0,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 70,
+    marginTop: 30,
   },
 
   numberText: {

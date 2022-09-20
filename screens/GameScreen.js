@@ -7,6 +7,7 @@ import Card from '../components/Card';
 import Instruction from '../components/Instruction';
 import Colors from '../constants/colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import GuessLogItem from '../components/GuessLogItem';
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min; //se suma + min para que nunca de 0
@@ -29,14 +30,14 @@ const GameScreen = ({ userInput, gameOver }) => {
   //Utilizo un useEffect porque esta condicional se ejecutara cada vez que currentGuess cambie
   useEffect(() => {
     if (currentGuess === userInput) {
-      gameOver();
+      gameOver(guessedNumbers.length);
     }
   }, [currentGuess, userInput, gameOver]);
 
-  useEffect(() =>{
+  useEffect(() => {
     minBoundary = 1;
     maxBoundary = 100;
-  },[])
+  }, []);
 
   //Logica que hace que el celular adivine nuevos numeros
   function nextGuessHandler(direction) {
@@ -62,10 +63,13 @@ const GameScreen = ({ userInput, gameOver }) => {
       currentGuess //exluyo curretGuess para que la maquina no pueda adivinar el mismo numero de nuevo
     );
     setCurrentGuess(newRndNumber);
-    setGuessedNumbers(arrayOfGuessedNumbers => [newRndNumber, ...arrayOfGuessedNumbers]);
+    setGuessedNumbers((arrayOfGuessedNumbers) => [
+      newRndNumber,
+      ...arrayOfGuessedNumbers,
+    ]);
   }
 
-  console.log('Numero de intentos: ', guessedNumbers.length)
+  const guessedNumberLen = guessedNumbers.length;
 
   return (
     <View style={styles.screen}>
@@ -76,22 +80,27 @@ const GameScreen = ({ userInput, gameOver }) => {
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-              <Ionicons name="md-remove" size={25}/>
+              <Ionicons name="md-remove" size={25} />
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}> 
-              <Ionicons name="md-add" size={25}/>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}>
+              <Ionicons name="md-add" size={25} />
             </PrimaryButton>
           </View>
         </View>
       </Card>
-      <View>
+      <View style={styles.listItems}>
         {/* {guessedNumbers.map(guessedNumber => <Text key={guessedNumber}>{guessedNumber}</Text>)} */}
         <FlatList
           data={guessedNumbers} //primero apuntar al arreglo
-          renderItem={(itemData => <Text>{itemData.item}</Text>)} //luegp pasar una funcion de renderizado
-          keyExtractor={(item => item)} //extraer las keys
+          renderItem={(itemData) => (
+            <GuessLogItem
+              roundNumber={guessedNumberLen - itemData.index}
+              guess={itemData.item}
+            />
+          )} //luegp pasar una funcion de renderizado
+          keyExtractor={(item) => item} //extraer las keys
         />
       </View>
     </View>
@@ -104,7 +113,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 45,
-    marginTop: 40,
+    marginTop: 10,
   },
 
   buttonsContainer: {
@@ -116,9 +125,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  hOrlText:{
+  hOrlText: {
     marginBottom: 15,
-  }
+  },
+
+  listItems:{
+    flex:1,
+    padding: 16,
+  },
+
 });
 
 /* Para posicionar pantallas y que no sean tapadas por los elementos del celular

@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: 'white', //accentColor
     padding: 12,
-    marginTop: 20,
+    marginTop: 10,
   }
 });
