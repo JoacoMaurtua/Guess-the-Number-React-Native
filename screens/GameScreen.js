@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
 import Title from '../components/Title';
 import NumberContainer from '../components/NumberContainer';
 import PrimaryButton from '../components/PrimaryButton';
@@ -24,6 +24,7 @@ let maxBoundary = 100;
 const GameScreen = ({ userInput, gameOver }) => {
   const initialGuess = generateRandomBetween(1, 100, userInput);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessedNumbers, setGuessedNumbers] = useState([initialGuess]); //inicio un estado con un arreglo de numeros adivinados por el cel
 
   //Utilizo un useEffect porque esta condicional se ejecutara cada vez que currentGuess cambie
   useEffect(() => {
@@ -37,6 +38,7 @@ const GameScreen = ({ userInput, gameOver }) => {
     maxBoundary = 100;
   },[])
 
+  //Logica que hace que el celular adivine nuevos numeros
   function nextGuessHandler(direction) {
     //condicional para que no se pueda hacer trampa
     if (
@@ -60,7 +62,10 @@ const GameScreen = ({ userInput, gameOver }) => {
       currentGuess //exluyo curretGuess para que la maquina no pueda adivinar el mismo numero de nuevo
     );
     setCurrentGuess(newRndNumber);
+    setGuessedNumbers(arrayOfGuessedNumbers => [newRndNumber, ...arrayOfGuessedNumbers]);
   }
+
+  console.log('Numero de intentos: ', guessedNumbers.length)
 
   return (
     <View style={styles.screen}>
@@ -81,7 +86,14 @@ const GameScreen = ({ userInput, gameOver }) => {
           </View>
         </View>
       </Card>
-      <View>{/* LOG ROUNDS */}</View>
+      <View>
+        {/* {guessedNumbers.map(guessedNumber => <Text key={guessedNumber}>{guessedNumber}</Text>)} */}
+        <FlatList
+          data={guessedNumbers} //primero apuntar al arreglo
+          renderItem={(itemData => <Text>{itemData.item}</Text>)} //luegp pasar una funcion de renderizado
+          keyExtractor={(item => item)} //extraer las keys
+        />
+      </View>
     </View>
   );
 };
@@ -128,4 +140,8 @@ const styles = StyleSheet.create({
 
 /* 
   Se puede agregar fuentes personalizadas gracias a la libreria expo-font
+*/
+
+/*
+  Para mostrar una lista de items optimizada se puede reemplazar un map con un componente FlatList
 */
