@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  FlatList,
+  useWindowDimensions,
+} from 'react-native';
 import Title from '../components/Title';
 import NumberContainer from '../components/NumberContainer';
 import PrimaryButton from '../components/PrimaryButton';
@@ -26,7 +33,7 @@ const GameScreen = ({ userInput, gameOver }) => {
   const initialGuess = generateRandomBetween(1, 100, userInput);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessedNumbers, setGuessedNumbers] = useState([initialGuess]); //inicio un estado con un arreglo de numeros adivinados por el cel
-
+  const { width, height } = useWindowDimensions();
   //Utilizo un useEffect porque esta condicional se ejecutara cada vez que currentGuess cambie
   useEffect(() => {
     if (currentGuess === userInput) {
@@ -71,9 +78,10 @@ const GameScreen = ({ userInput, gameOver }) => {
 
   const guessedNumberLen = guessedNumbers.length;
 
-  return (
-    <View style={styles.screen}>
-      <Title>Opponent's Guess</Title>
+  const marginTopDistance = height < 380 ? -30 : 10;
+
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <Instruction style={styles.hOrlText}>Higher or lower?</Instruction>
@@ -90,6 +98,36 @@ const GameScreen = ({ userInput, gameOver }) => {
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  //Si la pantalla esta horizontal, se muestra este renderizado
+  if(width > 500){
+    content = (
+      <>
+        <View style={styles.buttonsContainerWide}>
+        <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name="md-remove" size={25} />
+            </PrimaryButton>
+          </View>
+
+           <NumberContainer>{currentGuess}</NumberContainer>
+
+           <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'upper')}>
+              <Ionicons name="md-add" size={25} />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    )
+  }
+
+  return (
+    <View style={[styles.screen, { marginTop: marginTopDistance }]}>
+      <Title>Opponent's Guess</Title>
+      {content}
       <View style={styles.listItems}>
         {/* {guessedNumbers.map(guessedNumber => <Text key={guessedNumber}>{guessedNumber}</Text>)} */}
         <FlatList
@@ -112,8 +150,9 @@ export default GameScreen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 45,
-    marginTop: 10,
+    paddingVertical: 44,
+    paddingHorizontal: 50,
+    alignItems: 'center',
   },
 
   buttonsContainer: {
@@ -123,17 +162,22 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     flex: 1,
+    width: '50%'
+  },
+
+  buttonsContainerWide:{
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   hOrlText: {
     marginBottom: 15,
   },
 
-  listItems:{
-    flex:1,
+  listItems: {
+    flex: 1,
     padding: 16,
   },
-
 });
 
 /* Para posicionar pantallas y que no sean tapadas por los elementos del celular

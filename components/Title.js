@@ -1,9 +1,9 @@
 import { Text, StyleSheet } from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
-const Title = ({children}) => {
+const Title = ({children, otherStyle}) => {
   return (
-    <Text style={styles.title}>{children}</Text>
+    <Text style={[styles.title, otherStyle]}>{children}</Text>
   )
 }
 
@@ -17,7 +17,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 4,
     borderColor: 'white', //accentColor
-    padding: 12,
-    marginTop: 10,
+    padding: 10,
+    //marginTop: 5,
+    maxWidth: '80%',
+    width: 300,
   }
 });
+
+/* Es util combinar propiedades como max y minwidth con valores relativos, con
+   propiedades fijas con valores en px*/

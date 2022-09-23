@@ -90,3 +90,5 @@ const styles = StyleSheet.create({
 
 /* AppLoading es un componente de utilidad que muestra un loader mientras se carga la meta data
    como el uso de las fuentes */
+
+/* En app.json esta la configurada la horientacion por defecto del celular */

@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { TextInput, Text, View, StyleSheet, Alert } from 'react-native';
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Alert,
+  Dimensions,
+  useWindowDimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import Title from '../components/Title';
 import Colors from '../constants/colors';
@@ -8,6 +17,9 @@ import Instruction from '../components/Instruction';
 
 const StartGameScreen = ({ onPickNumber }) => {
   const [enteredNumber, setEnteredeNumber] = useState('');
+
+  //hook para ajustar el ancho y alto automaticamente segun el tam de pantalla
+  const { width, height } = useWindowDimensions();
 
   const changeInputHandler = (inputNumber) => {
     setEnteredeNumber(inputNumber);
@@ -25,45 +37,67 @@ const StartGameScreen = ({ onPickNumber }) => {
       ]);
       return;
     }
-    onPickNumber(chosenNumber); //por ahora
+    onPickNumber(chosenNumber);
   };
 
+  //dimensiones dinamicas
+  const marginTopDistance = height < 380 ? 30 : 100;
+
   return (
-    <View style={styles.rootContainer}>
-      <Title>Guess My Number</Title>
-      <Card>
-        <Instruction>Enter your Number:</Instruction>
-        <TextInput
-          style={styles.numberInput}
-          maxLength={2}
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={changeInputHandler}
-          value={enteredNumber}
-        />
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
-          </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-          </View>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+          <Title style={styles.otherTitleStyle}>Guess My Number</Title>
+          <Card style={styles.newCartSize}>
+            <Instruction>Enter your Number:</Instruction>
+            <TextInput
+              style={styles.numberInput}
+              maxLength={2}
+              keyboardType="number-pad"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={changeInputHandler}
+              value={enteredNumber}
+            />
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+              </View>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={confirmInputHandler}>
+                  Confirm
+                </PrimaryButton>
+              </View>
+            </View>
+          </Card>
         </View>
-      </Card>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
 export default StartGameScreen;
 
+const deviceHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
-  rootContainer:{
+  screen: {
     flex: 1,
-    marginTop: 100,
+  },
+
+  rootContainer: {
+    flex: 1,
+    marginTop: deviceHeight < 380 ? 30 : 100,
     alignItems: 'center',
   },
 
+  otherTitleStyle: {
+    marginBottom: 30,
+  },
+
+  newCartSize: {
+    marginTop: 40,
+  },
 
   numberInput: {
     height: 50,
@@ -102,3 +136,9 @@ const styles = StyleSheet.create({
    tambien esxisten otras muy utiles con respecto al teclado*/
 
 /* Para generar alertas utilizamos el componente Alert de react native y sus props */
+
+/* seWindowDimensionsactualiza widthy height automáticamente cuando cambia el tamaño de la pantalla */
+
+/* Para que se pueda salir del teclado en modo horizontal de iOS
+   es necesario usar el componente KeyboardAvoidingView dentro de
+   un componenete ScrollView*/
